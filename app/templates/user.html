@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h1>Links posted by {{ user.username }}</h1>
+<p>Member since {{ moment(user.registration_date).format('MMMM Do YYYY') }}
+	{% for post in posts %}
+	{% if post.deleted %}
+	<p>Deleted post.</p>
+	<p>Posted {{ moment(post.timestamp).fromNow() }}, deleted {{ moment(post.deleted_timestamp).fromNow() }}</a></p>
+	{% else %}
+	<p>{{ moment(post.timestamp).fromNow() }} : <a href={{ post.url }}>{{ post.title }}</a></p>
+	{% if user == current_user %}
+	<p><a href= {{ url_for('delete', post_id=post.id) }} >Delete post</a></p>
+	{% endif %}
+	{% endif %}
+	
+	{% endfor %}
+	{% endblock %}

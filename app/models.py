@@ -8,6 +8,7 @@ class User(UserMixin, db.Model):
 	username = db.Column(db.String(64), index=True, unique=True)
 	password_hash = db.Column(db.String(128))
 	karma = db.Column(db.Integer)
+	registration_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 	
 	def __repr__(self):
@@ -30,6 +31,8 @@ class Post(db.Model):
 	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 	score = db.Column(db.Integer)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	deleted = db.Column(db.Boolean, default = False)
+	deleted_timestamp = db.Column(db.DateTime, index=True)
 
 
 	def __repr__(self):

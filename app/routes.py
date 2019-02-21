@@ -2,14 +2,16 @@ from app import app, db
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, logout_user, current_user, login_user
 from werkzeug.urls import url_parse
-from app.forms import LoginForm, RegistrationForm, SubmitForm
+from app.forms import LoginForm, RegistrationForm, SubmitForm, DeleteForm
 from app.models import User, Post
+from datetime import datetime
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 #@login_required
 def index():
-	posts = Post.query.all()
+	page = request.args.get('page', 1, type=int)
+	posts = Post.query.order_by(Post.timestamp.desc()).all()
 	return render_template('index.html', title = 'Front page', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -57,3 +59,31 @@ def submit():
 		flash('Link submitted.')
 		return redirect(url_for('index'))
 	return render_template('submit.html', title='Submit', form=form)
+
+@login_required
+@app.route('/delete/<post_id>')
+def delete(post_id):
+	post = Post.query.filter_by(id=post_id).first()
+	if post:
+		if not post.deleted:
+			post.deleted = True
+			post.deleted_timestamp = datetime.utcnow()
+			db.session.commit()
+			flash('Link deleted.')
+			return redirect(url_for('index'))
+		else:
+			flash('Link is already deleted')
+			return redirect(url_for('index'))
+	flash("Link doesn't exist.")
+	return redirect(url_for('index'))
+
+@app.route('/user/<username>')
+def user(username):
+	user = User.query.filter_by(username=username).first_or_404()
+	if user:
+		posts = Post.query.filter_by(user_id=user.id).all()
+		if posts:
+			return render_template('user.html', user=user, posts=posts)
+		return render_template('user.html', user=user)
+	return redirect(url_for('index'))
+    

@@ -4,7 +4,12 @@
 	{% block title %}
 	Flaskitt
 	{% endblock %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+	{% block styles %}
+	{{super()}}
+	<link rel="stylesheet" href="{{url_for('.static', filename='style.css')}}">
+	{% endblock %}
+	
 	{% block scripts %}
 	{{ super() }}
 	{{ moment.include_moment() }}
@@ -25,7 +30,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="{{ url_for('submit') }}">Submit new link</a></li>
-					<li><a href="">{{ current_user.username }}</a></li>
+					<li><a href="{{ url_for('user', username=current_user.username) }}">{{ current_user.username }}</a></li>
 					{% endif %}
 				</ul>	
 			</div>	

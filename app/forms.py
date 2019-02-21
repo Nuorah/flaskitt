@@ -25,3 +25,6 @@ class SubmitForm(FlaskForm):
 	title = StringField("Title", validators=[DataRequired()])
 	url = StringField("Url", validators=[DataRequired(), URL()])
 	submit = SubmitField('Submit')
+
+class DeleteForm(FlaskForm):
+	delete = SubmitField('Delete link')
