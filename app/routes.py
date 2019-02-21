@@ -10,8 +10,6 @@ from app.models import User, Post
 #@login_required
 def index():
 	posts = Post.query.all()
-	for post in posts:
-		print(post.title)
 	return render_template('index.html', title = 'Front page', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
