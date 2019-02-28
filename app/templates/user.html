@@ -10,7 +10,7 @@
 	<p class="post_info">Posted {{ moment(post.timestamp).fromNow() }}, deleted {{ moment(post.deleted_timestamp).fromNow() }}</a></p>
 	{% else %}
 	<p class="post_title"><a href={{ post.url }}>{{ post.title }}</a></p>
-	<p class="post_info">Posted {{ moment(post.timestamp).fromNow() }}{% if user == current_user %}, <a href= {{ url_for('delete', post_id=post.id) }}>delete post</a></p>		
+	<p class="post_info">Posted {{ moment(post.timestamp).fromNow() }}{% if user == current_user %}, <a href= {{ url_for('main.delete', post_id=post.id) }}>delete post</a></p>		
 	{% else %}
 	</p>
 	<p class="post_info"></p>

@@ -6,7 +6,7 @@
 {% if not post.deleted %}
 
 <p class="post_title"><a href={{ post.url }}>{{ post.title }}</a></p>
-<p class="post_info">Posted by <a href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>, {{ moment(post.timestamp).fromNow() }}.</p>
+<p class="post_info">Posted by <a href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}</a>, {{ moment(post.timestamp).fromNow() }}.</p>
 {% endif %}
 {% endfor %}
 {% endif %}
