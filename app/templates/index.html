@@ -4,9 +4,18 @@
 {% if posts %}
 {% for post in posts %}
 {% if not post.deleted %}
-<h2><a href={{ post.url }}>{{ post.title }}</a></h2>
-<p>Posted by <a href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>, {{ moment(post.timestamp).fromNow() }}.<p>
+
+<p class="post_title"><a href={{ post.url }}>{{ post.title }}</a></p>
+<p class="post_info">Posted by <a href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>, {{ moment(post.timestamp).fromNow() }}.</p>
+{% endif %}
+{% endfor %}
+{% endif %}
+<div class="pagination">
+	{% if prev_url %}
+	<span class="older">Older posts</span><span class="newer"><a href="{{ prev_url }}">Newer posts</a></span>
 	{% endif %}
-	{% endfor %}
+	{% if next_url %}
+	<span class="older"><a href="{{ next_url }}">Older posts</a></span><span class="newer">Newer posts</span>
 	{% endif %}
-	{% endblock %}
+</div>
+{% endblock %}

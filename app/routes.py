@@ -11,8 +11,13 @@ from datetime import datetime
 #@login_required
 def index():
 	page = request.args.get('page', 1, type=int)
-	posts = Post.query.order_by(Post.timestamp.desc()).all()
-	return render_template('index.html', title = 'Front page', posts=posts)
+	posts = Post.query.filter(Post.deleted == False).order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+	next_url = url_for('index', page=posts.next_num) \
+		if posts.has_next else None
+	prev_url = url_for('index', page=posts.prev_num) \
+		if posts.has_prev else None
+	return render_template('index.html',
+	 title = 'Front page', posts=posts.items, next_url=next_url, prev_url=prev_url)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
