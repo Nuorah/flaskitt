@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
+import logging
+from logging.handlers import RotatingFileHandler
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -44,7 +46,7 @@ def create_app(config_class=Config):
 
 		app.logger.setLevel(logging.INFO)
 		app.logger.info('Microblog startup')
-		
+
 	return app
 
 from app import models
